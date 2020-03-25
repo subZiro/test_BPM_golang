@@ -22,27 +22,27 @@ func init() {
 	flag.StringVar(&q_str, "q", q_str, "что ищем")
 }
 
-func count_strinbody(string_html, q_str string) int {
+func count_q_inbody(string_html, q string) int {
 	// подсчет количества вхождений строки в полученый запрос
-	return strings.Count(strings.ToLower(string_html), q_str)
+	return strings.Count(strings.ToLower(string_html), q)
 }
 
-func get_url(url string) []byte {
-	// get запрос на URL
+func get_url(url string) (*string, error) {
+	// get запрос на URL, возвращает содержимое htlm страницы
 	response, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("%s", err)
 		os.Exit(1)
 	}
 	defer response.Body.Close()  // закрытие
-
 	//s, err := io.Copy(os.Stdout, resp.Body)
 	contents, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		fmt.Printf("%s", err)
 		os.Exit(1)
 	}
-	return contents
+	result := string(contents)
+	return &result, nil
 }
 
 func scaner_urls() []string {
@@ -52,7 +52,6 @@ func scaner_urls() []string {
 	for {
 		url := strings.TrimSpace(buf.Text())
 		a = append(a, url)  //добавление линка в массив
-		//fmt.Println(url)
 		if !buf.Scan() {
 			break
 		}
@@ -60,11 +59,17 @@ func scaner_urls() []string {
 	return a[1:]
 }
 
-func parse(urls []string, q_str string) int {
+func parse(urls []string, q string) int {
 	//  парс
 	total := 0
 	for _, url := range urls {
-		fmt.Println(url, q_str)
+		contents, err := get_url(url)
+		if err != nil {
+			return 0
+		}
+		count_i := count_q_inbody(*contents, q)
+		fmt.Printf("Count '%s' for %s : %d\n", q, url, count_i)
+		
 		total += 1
 	}
 
