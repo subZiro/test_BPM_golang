@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-
 var (
     k int = 5 //кол-во "потоков"
     q_str string = "go" //строка поиска
@@ -70,21 +69,16 @@ func parse(urls []string, q string) int {
 		count_i := count_q_inbody(*contents, q)
 		fmt.Printf("Count '%s' for %s : %d\n", q, url, count_i)
 		
-		total += 1
+		total += count_i
 	}
-
 	return total
 }
 
 
 func main() {
 	flag.Parse() //И запускаем разбор аргументов
-	//b := count_strinbody(string(contents), q_str)
-	//fmt.Printf("Найдено %d совпадений\n", b)
-
 	fmt.Println("========================")
 	urls := scaner_urls()
-	//s := scaner_urls()
 	fmt.Printf("получили %d url\n", len(urls))
 	fmt.Printf("array urls: %s\n", urls)
 	fmt.Println("========================")
@@ -92,24 +86,4 @@ func main() {
 	result := parse(urls, q_str)
 	fmt.Println("result = ", result)
 	fmt.Println("========================")
-	//input := "foo\nbar\nbaz"
-    //scanner := bufio.NewScanner(os.Stdin)
-    //scanner.Split(bufio.ScanLines)
-    //for scanner.Scan() {
-    //   fmt.Println(scanner.Text())
-    //}
-
-
-
-
-
-
-
-	fmt.Println("========================")
 }
-
-
-
-
-
-
