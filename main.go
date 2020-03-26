@@ -114,11 +114,9 @@ func parse_one_url(url string, pobj ProducerObject, wg *sync.WaitGroup) {
 }
 
 func main() {
-	flag.Parse() //И запускаем разбор аргументов
 	fmt.Println("========================")
-
+	flag.Parse()  //запускаем разбор аргументов
 	urls := scaner_urls()
-	fmt.Printf("Получено %d url\n", len(urls))
 	wg := new(sync.WaitGroup)  // индикатор завершения потоков
 	parse(urls, q, k, wg)
 	fmt.Println("========================")
