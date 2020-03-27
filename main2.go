@@ -60,9 +60,11 @@ func scaner_urls() chan string{
 		var wg_url sync.WaitGroup
 		for {
 			url := strings.TrimSpace(buf.Text())
-			wg_url.Add(1)
-			chan_url <- url  // передача url в канал
-			//a = append(a, url)  //добавление линка в массив
+			if url != ""{
+				wg_url.Add(1)
+				chan_url <- url  // передача url в канал
+				//a = append(a, url)  //добавление линка в массив
+			}
 			if !buf.Scan() {
 				break
 			}
