@@ -57,12 +57,14 @@ func scaner_urls() []string {
 	buf := bufio.NewScanner(os.Stdin)
 	for {
 		url := strings.TrimSpace(buf.Text())
-		a = append(a, url)  //добавление линка в массив
+		if url != "" {
+			a = append(a, url)  //добавление линка в массив
+		}
 		if !buf.Scan() {
 			break
 		}
 	}
-	return a[1:]
+	return a
 }
 
 func count_q_inbody(string_html, q string) int {
